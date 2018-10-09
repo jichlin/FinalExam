@@ -1,0 +1,41 @@
+﻿@using FinalExamModels
+@model List<FinalExamModels.User>
+
+@{ 
+
+}
+
+
+<div>
+    <table id="tableUser">
+        <thead>
+            <tr>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (User x in Model)
+            {
+                <tr>
+                    <td> @x.Username </td>
+                    <td> @x.Roles</td>
+                    @if (x.isActive)
+                    {
+                        <td>Yes</td>
+                    }
+                    else
+                    {
+                        <td> No </td>
+                    }
+                    <td> @x.Picture</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>    
+ 
+<script>
+    $(document).ready(function () {
+        $("#tableUser").dataTable();
+    });
+</script>
