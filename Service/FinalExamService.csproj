@@ -32,6 +32,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,7 +43,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Module\Class1.cs" />
+    <Compile Include="Helper\EncryptedActionParameterAttribute.cs" />
+    <Compile Include="Helper\ModelSQLParamService.cs" />
+    <Compile Include="Helper\MyExtensions.cs" />
+    <Compile Include="Helper\ReflectionExtensions.cs" />
+    <Compile Include="Helper\SessionEnum.cs" />
+    <Compile Include="Helper\Util.cs" />
+    <Compile Include="Module\ProjectService.cs" />
+    <Compile Include="Module\RolesService.cs" />
+    <Compile Include="Module\SprintService.cs" />
+    <Compile Include="Module\StateService.cs" />
+    <Compile Include="Module\TaskService.cs" />
+    <Compile Include="Module\UserService.cs" />
+    <Compile Include="Module\WorkItemService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +67,9 @@
       <Project>{1838243C-3F0F-40CF-859B-5C881B73217B}</Project>
       <Name>FinalExamModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -9,17 +9,17 @@ namespace Data.Infrastructure
 {
     public class DBFactory : Disposable, IDbFactory
     {
-        MembershipContext MemberContext;
+        OJD OJDs;
 
-        public MembershipContext Init()
+        public OJD Init()
         {
-            return MemberContext ?? (MemberContext = new MembershipContext());
+            return OJDs ?? (OJDs = new OJD());
         }
 
         protected override void DisposeCore()
         {
-            if (MemberContext != null)
-                MemberContext.Dispose();
+            if (OJDs != null)
+                OJDs.Dispose();
         }
     }
 }

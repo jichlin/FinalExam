@@ -10,21 +10,21 @@ namespace Data.Infrastructure
     public class UnitOfWork : IUnitOfWork
     {
         private readonly IDbFactory DBFactory;
-        private MembershipContext MemberContext;
+        private OJD OJDs;
 
         public UnitOfWork(IDbFactory DbFactory)
         {
             this.DBFactory = DbFactory;
         }
 
-        public MembershipContext DbContext
+        public OJD DbContext
         {
-            get { return MemberContext ?? (MemberContext = DBFactory.Init()); }
+            get { return OJDs ?? (OJDs = DBFactory.Init()); }
         }
 
         public void Commit()
         {
-            MemberContext.Commit();
+            OJDs.Commit();
         }
     }
 }

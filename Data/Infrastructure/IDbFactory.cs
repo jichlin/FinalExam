@@ -9,6 +9,6 @@ namespace Data.Infrastructure
 {
     public interface IDbFactory : IDisposable
     {
-        MembershipContext Init();
+        OJD Init();
     }
 }

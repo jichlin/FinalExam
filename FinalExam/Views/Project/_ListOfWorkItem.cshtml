@@ -1,0 +1,152 @@
+﻿@model List<WorkItem>
+
+@{
+    int sprintID = ViewBag.SprintID;
+}
+
+<div>
+    <button style="float:right" id="btnSetDates" data-toggle="modal" data-target="#myModal">Set Dates</button>
+</div>
+
+
+<div>
+    <button id="btnAddWorkItems" value="@sprintID">Add Work Items</button>
+</div>
+
+<table id="tableWorkItem">
+    <thead>
+        <tr>
+            <td>Work Item</td>
+            <td>State</td>
+            <td>Signed To</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (WorkItem x in Model)
+        {
+            <tr>
+                <td>
+                    <button class="addWorkTask" value="@x.WorkItemID" data-url="@Url.Action("InsertUpdateWorkTask" , new { WorkID = x.WorkItemID})">+</button>
+                    <span style="font-size:16px">@x.WorkItemName</span>
+                    @foreach (WorkTask y in x.WorkTasks)
+                    {
+                        <span style="margin-left:10px;display:block">@y.TaskName</span>
+                        <br />
+                    }
+                </td>
+                <td>
+                    @if (x.StateID == 1)
+                    {
+                        <p>To Do</p>
+                    }
+                    else if (x.StateID == 2)
+                    {
+                        <p>In Process</p>
+
+                    }
+                    else
+                    {
+                        <p>Done </p>
+                    }
+
+                    <br />
+                    @foreach (WorkTask y in x.WorkTasks)
+                    {
+                        if (y.StateID == 1)
+                        {
+                            <p>To Do</p>
+                        }
+                        else if (y.StateID == 2)
+                        {
+                            <p>In Process</p>
+
+                        }
+                        else
+                        {
+                            <p>Done </p>
+                        }
+                        <br />
+                    }
+                </td>
+                <td>
+                    <br />
+                    <br />
+                    @foreach (WorkTask y in x.WorkTasks)
+                    {
+                        <p>@y.Username</p>
+                            <br />
+                    }
+                </td>
+                <td>
+                    <span>@Html.ActionLink("Edit", "InsertUpdateWorkItem", new { sprintID = sprintID ,workItemID = x.WorkItemID }, new { @class = "editWorkItem" })</span>
+                    @foreach (WorkTask y in x.WorkTasks)
+                    {
+                        <div>
+                            @Html.ActionLink("Edit", "InsertUpdateWorkTask", new { WorkID = x.WorkItemID, TaskID = y.TaskID }, new { @class = "editWorkTask" })
+                        </div>
+                    }
+                </td>
+                <td>
+                    <span>@Html.ActionLink("Delete","DeleteWorkItem",new {WorkItemID = x.WorkItemID })</span>
+                    @foreach (WorkTask y in x.WorkTasks)
+                    {
+                        <div>
+                            @Html.ActionLink("Delete", "DeleteWorkTask", new { TaskID = y.TaskID })
+                        </div>
+                    }
+
+
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div id="modalSerbaGuna" class="modal fade" role="dialog">
+
+</div>
+
+
+<script>
+    $('#tableWorkItem').dataTable();
+    $('#btnDates').on('click', function () {
+        var id = $(this).val();
+
+    });
+
+    $("#btnSetDates").on("click", function () {
+        $('#modalSerbaGuna').load('@Url.Action("UpdateSprint", new {sprintID = Model[0].SprintID})')
+        $("#modalSerbaGuna").modal("show");
+    });
+
+    $("#btnAddWorkItems").on("click", function () {
+        $('#modalSerbaGuna').load('@Url.Action("InsertUpdateWorkItem",new { sprintID = sprintID })');
+        $("#modalSerbaGuna").modal("show");
+
+    });
+
+    $('.editWorkItem').on("click", function () {
+        event.preventDefault();
+        url = $(this).attr('href');
+        $('#modalSerbaGuna').load(url);
+        $("#modalSerbaGuna").modal("show");
+    });
+
+    $('.editWorkTask').on("click", function () {
+        event.preventDefault();
+        url = $(this).attr('href');
+        $('#modalSerbaGuna').load(url);
+        $("#modalSerbaGuna").modal("show");
+    });
+
+    $('.addWorkTask').on('click', function () {
+        url = $(this).data('url');
+        $('#modalSerbaGuna').load(url);
+        $("#modalSerbaGuna").modal("show");
+    });
+
+</script>

@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Sprint>
+
+@{
+    ViewBag.Title = "ProjectDetails";
+    string name = ViewBag.Name;
+    List<WorkItem> items;
+    if (ViewBag.works == null)
+    {
+        items = new List<WorkItem>();
+    }
+    else
+    {
+        items = ViewBag.works;
+    }
+
+    
+
+
+}
+
+<div style="margin-top:30px">
+    <div class="sidenav" style="margin-top:80px">
+        @if (Model.Count() > 0)
+        {
+            <h3 class="sprintTitle">Future</h3>
+
+            foreach (Sprint x in Model)
+            {
+                if (x.SprintStartDate > DateTime.Today)
+                {
+                    <a href="@Url.Action("ShowWorkItems",new { sprintID = x.SprintID })" class="sprintName">@x.SprintName</a>
+                }
+            }
+            <h3 class="sprintTitle">Present</h3>
+            foreach (Sprint x in Model)
+            {
+
+                if (x.SprintStartDate.Day == DateTime.Today.Day)
+                {
+                    <a href="@Url.Action("ShowWorkItems",new { sprintID = x.SprintID })" class="sprintName">@x.SprintName</a>
+                }
+            }
+            <h3 class="sprintTitle">Past</h3>
+            foreach (Sprint x in Model)
+            {
+
+                if (x.SprintStartDate < DateTime.Today)
+                {
+                    <a href="@Url.Action("ShowWorkItems",new { sprintID = x.SprintID })" class="sprintName">@x.SprintName</a>
+                }
+            }
+        }
+        else
+        {
+            <h3>Empty</h3>
+        }
+    </div>
+
+    <!-- Page content -->
+    <div class="main">
+        <h2>Backlog Items - @name</h2>
+        <div id="target">
+
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+<script>
+    $(document).ready(function () {
+        $('#target').load('@Url.Action("ShowWorkItems", new { sprintID = Model.First().SprintID })')
+        $('.sprintName').on('click', function () {
+            event.preventDefault();
+            url = $(this).attr('href')
+            $('#target').load(url)
+        });
+
+    });
+
+
+
+
+</script>    
+    
+    
+}

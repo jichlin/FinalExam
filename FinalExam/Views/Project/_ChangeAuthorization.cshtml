@@ -1,0 +1,62 @@
+﻿@model List<AuthorizeUser>
+
+@{
+    List<User> x = ViewBag.users;
+    int i = 0;
+}
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+    </div>
+    <div class="modal-body">
+        @using (Html.BeginForm("changeAuthorization", "Project", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <table id="tableSecurity" style="width:80%">
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>Name</td>
+                        <td>Auth</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (AuthorizeUser user in Model)
+                {
+                        <tr>
+                            <td>
+                                @Html.Hidden("[" + i.ToString() + "].User.UserID" , user.User.UserID)
+                                @Html.Hidden("[" + i.ToString() + "].ProjectID" , user.ProjectID)
+                                @Html.Hidden("[" + i.ToString() + "].User.ImagePath", user.User.ImagePath)
+                                @if (user.User.ImagePath == "" || user.User.ImagePath == null)
+                                {
+                                    <img src="~/ProfilePic/default.png" style="width:100px;height:100px" />
+                                }
+                                else
+                                {
+                                    <img src="@user.User.ImagePath" style="width:100px;height:100px" />
+                                }
+                            </td>
+                            <td>
+                                @user.User.UserName
+                                @Html.Hidden("[" + i.ToString() + "].User.UserName", user.User.UserName)
+                                @Html.Hidden("[" + i.ToString() + "].User.UserStatus" , user.User.UserStatus)
+                                @Html.Hidden("[" + i.ToString() + "].User.RolesID",user.User.RolesID)
+                            </td>
+                            <td>
+                                @Html.CheckBox("[" + i.ToString() + "].Authorize",user.Authorize)
+                                
+                            </td>
+                        </tr>
+                        i = i + 1;
+                    }
+                </tbody>
+            </table>
+
+            <button id="btnSubmit">Submit</button>
+        }
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+</div>

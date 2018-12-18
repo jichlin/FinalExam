@@ -1,25 +1,62 @@
-﻿@using FinalExamModels
-@model List<FinalExamModels.User>
+﻿@model List<FinalExamModels.User>
 
-@{ 
-
+@{
+    int role = int.Parse(Session[SessionEnum.ROLEUSER].ToString());
 }
 
+<style>
+    img {
+        width: 100px;
+        height: 100px;
+    }
+</style>
 
 <div>
+    @if (role == 2)
+    {
+        <button style="float:right" id="btnAddUser">Add User</button>
+    }
     <table id="tableUser">
         <thead>
             <tr>
-                <td></td>
+                <td>Pic</td>
+                <td>UserID</td>
+                <td>Nama</td>
+                <td>Roles</td>
+                <td>Active</td>
+                @if (role == 2)
+                {
+                    <td></td>
+                }
             </tr>
         </thead>
         <tbody>
             @foreach (User x in Model)
             {
+
                 <tr>
-                    <td> @x.Username </td>
-                    <td> @x.Roles</td>
-                    @if (x.isActive)
+                    <td>
+                        @if (x.ImagePath == "" || x.ImagePath == null)
+                        {
+                            <img src="~/ProfilePic/default.png" />
+                        }
+                        else
+                        {
+                            <img src="@x.ImagePath" />
+                        }
+                    </td>
+                    <td>@x.UserID</td>
+                    <td> @x.UserName </td>
+                    @if (x.RolesID == 2)
+                    {
+                        <td>Admin</td>
+                    }
+                    else
+                    {
+                        <td>User</td>
+
+                    }
+                    @if (x.UserStatus)
                     {
                         <td>Yes</td>
                     }
@@ -27,15 +64,53 @@
                     {
                         <td> No </td>
                     }
-                    <td> @x.Picture</td>
+                    @if (role == 2)
+                    {
+                        <td>
+                            <button class="btnEdit" data-val="@x.UserID">Edit</button>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
-</div>    
- 
-<script>
-    $(document).ready(function () {
-        $("#tableUser").dataTable();
-    });
-</script>
+</div>
+
+<!-- Modal -->
+<div id="modalAddUser" class="modal fade" role="dialog" data-url="@Url.Action("addUser")">
+
+</div>
+
+
+
+
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+            $("#tableUser").dataTable();
+
+            $("#btnAddUser").on("click", function () {
+                var url = $("#modalAddUser").data('url');
+                $.get(url, function (data) {
+                    $("#modalAddUser").html(data);
+                    $("#modalAddUser").modal("show");
+                });
+            });
+
+            $(".btnEdit").on("click", function () {
+                var id = $(this).data('val');
+                var url = $("#modalAddUser").data('url');
+                var url = url + "?UserID=" + id
+                $.get(url, function (data) {
+                    $("#modalAddUser").html(data);
+                    $("#modalAddUser").modal("show");
+                });
+            });
+
+
+        });
+
+    </script>
+
+}

@@ -13,7 +13,7 @@ namespace Data.Infrastructure
     public class RepositoryBase<T> where T : class
     {
         #region Properties
-        private MembershipContext MemberContext;
+        private OJD OJDs;
         private readonly IDbSet<T> DBSet;
         enum ExecType { List, Single, NoExecRecord };
 
@@ -23,9 +23,9 @@ namespace Data.Infrastructure
             private set;
         }
 
-        protected MembershipContext DbContext
+        protected OJD DbContext
         {
-            get { return MemberContext ?? (MemberContext = DBFactory.Init()); }
+            get { return OJDs ?? (OJDs = DBFactory.Init()); }
         }
 
         protected RepositoryBase(IDbFactory DbFactory)
@@ -42,7 +42,7 @@ namespace Data.Infrastructure
         public virtual void Update(T Entity)
         {
             DBSet.Attach(Entity);
-            MemberContext.Entry(Entity).State = EntityState.Modified;
+            OJDs.Entry(Entity).State = EntityState.Modified;
         }
 
         public virtual void Delete(T Entity)
